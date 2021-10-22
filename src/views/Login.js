@@ -6,18 +6,19 @@ import {setAuthUser} from "./../store/authUser";
 import {Link} from "react-router-dom";
 import {fetchQuestions} from "./../store/questions";
 
-const Login = () => {
+const Login = (props) => {
 	const dispatch = useDispatch();
 	const usersSlice = useSelector((state) => state.users);
 	const [userID, setUserID] = useState(null);
+	const previousURL = props.location.pathname;
 
 	const users = Object.values(usersSlice.list);
 	//Start fetching users on start
 	useEffect(() => {
 		dispatch(fetchUsers());
+		dispatch(fetchQuestions());
 		return () => {
 			//Start fetching users on COMPONENTWILLUNMOUNT
-			dispatch(fetchQuestions());
 		};
 	}, [dispatch]);
 
@@ -69,7 +70,7 @@ const Login = () => {
 
 			<br />
 			<Link
-				to='/'
+				to={previousURL ? previousURL : "/"}
 				type='submit'
 				onClick={() => handleLogin()}
 				className={

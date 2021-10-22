@@ -1,6 +1,6 @@
 import "./App.css";
 import Navbar from "./Compontents/Navbar";
-import {Redirect, Route, Switch} from "react-router-dom";
+import {Route, Switch} from "react-router-dom";
 import Home from "./views/Home";
 import AddNew from "./views/AddNew";
 import LeaderboardPlayer from "./views/LeaderboardPlayer";
@@ -27,7 +27,6 @@ function App() {
 						) : (
 							<>
 								<Login {...props} />
-								<Redirect to='/welcome' />
 							</>
 						)
 					}
@@ -35,11 +34,7 @@ function App() {
 				<Route
 					path='/add'
 					render={(props) =>
-						user ? (
-							<AddNew {...props} />
-						) : (
-							<Redirect to='/welcome' />
-						)
+						user ? <AddNew {...props} /> : <Login {...props} />
 					}
 				/>
 				<Route
@@ -48,19 +43,23 @@ function App() {
 						user ? (
 							<LeaderboardPlayer {...props} />
 						) : (
-							<Redirect to='/welcome' />
+							<Login {...props} />
 						)
 					}
 				/>
-				<Route path='/welcome' component={Login} />
 				<Route
 					path='/'
 					exact
 					render={(props) =>
-						user ? <Home {...props} /> : <Redirect to='/welcome' />
+						user ? <Home {...props} /> : <Login {...props} />
 					}
 				/>
-				<Route component={NotFound} />)
+				<Route
+					render={(props) =>
+						user ? <NotFound {...props} /> : <Login {...props} />
+					}
+				/>
+				)
 			</Switch>
 		</div>
 	);

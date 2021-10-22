@@ -56,7 +56,7 @@ export default function Navbar() {
 						</ul>
 						{!user ? (
 							<Link
-								to='welcome'
+								to='/'
 								className='btn btn-outline-success '
 								type='submit'
 							>
@@ -72,7 +72,7 @@ export default function Navbar() {
 								/>
 								<div className='ps-2 pe-4'>{user.name}</div>
 								<Link
-									to='welcome'
+									to='/'
 									className='btn btn-outline-danger '
 									type='submit'
 									onClick={() => byebye()}

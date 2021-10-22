@@ -1,20 +1,28 @@
 import React, {useState} from "react";
-import {useLocation, Link} from "react-router-dom";
+import {useLocation, Link, useHistory} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {addNewAnswer, fetchQuestions} from "../store/questions";
 import {fetchUsers} from "./../store/users";
 import {updateAuthUser} from "../store/authUser";
 
 const QuestionData = (props) => {
+	const history = useHistory();
+	const questionsList = useSelector((state) => state.questions.list);
+	const usersList = useSelector((state) => state.users.list);
+	let id = props.match.params.id;
+	if (!questionsList[id]) {
+		id = "xj352vofupe1dqz9emx13r";
+		history.push("/not-found");
+	}
 	const dispatch = useDispatch();
 	const authUserSlice = useSelector((state) => state.authUser);
 	const user = authUserSlice.user;
 	const loader = authUserSlice.loader;
 	const location = useLocation();
-	const {action, authorName, authorAvatar} = location;
-	const questionsList = useSelector((state) => state.questions.list);
-	const id = props.match.params.id;
+	const {action} = location;
 	const selectedQuestion = questionsList[id];
+	const authorNamee = selectedQuestion.author;
+	const authorAvatarr = usersList[authorNamee].avatarURL;
 	const [answer, setAnswer] = useState(null);
 	const userAnswer = user.answers[id];
 	const optionOneLength = selectedQuestion.optionOne.votes.length;
@@ -28,14 +36,6 @@ const QuestionData = (props) => {
 		(selectedQuestion.optionTwo.votes.length * 100) /
 		totalQuestionVotes
 	).toFixed(0);
-
-	console.log(
-		totalQuestionVotes,
-		optionOneLength,
-		optionTwoLength,
-		optionOnePercentage,
-		optionTwoPercentage
-	);
 
 	const addNewAnswerHandler = (authedUser, qid, answer) => {
 		const answerData = {
@@ -54,12 +54,12 @@ const QuestionData = (props) => {
 	) : action === "answer" ? (
 		<div className='question-data-wrapper my-5  border border-success'>
 			<div className='question-title'>
-				<small> {authorName} asks:</small>
+				<small> {authorNamee} asks:</small>
 			</div>
 			<div className='question-body d-flex m-2'>
 				<div className='question-avatar px-5  text-center'>
 					<img
-						src={authorAvatar}
+						src={authorAvatarr}
 						className='rounded-circle'
 						style={{width: "100px"}}
 						alt=''
@@ -100,7 +100,9 @@ const QuestionData = (props) => {
 					</div>
 
 					<Link
-						to={`/question/${id}`}
+						to={{
+							pathname: `/question/${id}`,
+						}}
 						onClick={() => addNewAnswerHandler(user.id, id, answer)}
 						type='submit'
 						className={
@@ -117,12 +119,12 @@ const QuestionData = (props) => {
 	) : (
 		<div className='question-data-wrapper my-5  border border-success'>
 			<div className='question-title'>
-				<small> {authorName}'s Asked:</small>
+				<small> {authorNamee}'s Asked:</small>
 			</div>
 			<div className='question-body d-flex m-2'>
 				<div className='question-avatar px-5  text-center'>
 					<img
-						src={authorAvatar}
+						src={authorAvatarr}
 						className='rounded-circle'
 						style={{width: "100px"}}
 						alt=''

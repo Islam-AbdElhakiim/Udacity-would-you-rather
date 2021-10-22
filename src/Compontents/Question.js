@@ -26,8 +26,6 @@ export default function Question(props) {
 							className='btn btn-success w-100'
 							to={{
 								pathname: `/question/${question.id}`,
-								authorName,
-								authorAvatar,
 								action,
 							}}
 						>
@@ -38,8 +36,6 @@ export default function Question(props) {
 							className='btn btn-primary w-100'
 							to={{
 								pathname: `/question/${question.id}`,
-								authorName,
-								authorAvatar,
 								action,
 							}}
 						>

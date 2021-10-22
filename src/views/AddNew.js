@@ -44,7 +44,7 @@ export default function AddNew() {
 							className='form-control text-center'
 						/>
 						<Link
-							to='/home'
+							to='/'
 							onClick={() => addNewHandler()}
 							type='submit'
 							className={
